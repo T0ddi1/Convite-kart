@@ -131,25 +131,33 @@
   .timing .val{font-family:'Roboto Mono',monospace; font-weight:600; font-size:19px;}
 
   /* COUNTDOWN */
+  .hero-meta{display:flex; flex-direction:column; align-items:center; gap:16px; margin:6px 0 30px;}
+  .cd-caption{
+    display:block; font-family:'Roboto Mono',monospace; font-size:12px; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--accent-2); margin:0;
+  }
   .countdown{
-    display:inline-flex; align-items:stretch; gap:2px; margin:0 0 22px;
-    background:var(--surface-2); border:1px solid var(--line); border-radius:12px;
-    padding:4px; box-shadow:var(--shadow);
+    display:inline-flex; align-items:stretch; gap:3px;
+    background:var(--surface-2); border:1px solid color-mix(in srgb, var(--accent) 30%, var(--line));
+    border-radius:14px; padding:5px; box-shadow:var(--shadow), 0 0 0 1px color-mix(in srgb, var(--accent) 12%, transparent);
   }
   .cd-seg{
     display:flex; flex-direction:column; align-items:center; justify-content:center;
-    background:var(--surface); border-radius:8px; padding:10px 14px; min-width:64px;
+    background:var(--surface); border-radius:10px; padding:12px 20px; min-width:78px;
   }
   .cd-val{
     font-family:'Roboto Mono',monospace; font-variant-numeric:tabular-nums;
-    font-size:26px; font-weight:600; color:var(--accent); line-height:1;
+    font-size:clamp(28px,6vw,38px); font-weight:600; color:var(--accent); line-height:1;
+    text-shadow:0 0 22px color-mix(in srgb, var(--accent) 55%, transparent);
   }
-  .cd-lbl{font-size:10px; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); margin-top:4px;}
-  .cd-sep{display:flex; align-items:center; font-family:'Roboto Mono',monospace; font-size:20px; color:var(--line); font-weight:600;}
-  .cd-caption{
-    display:block; font-family:'Roboto Mono',monospace; font-size:11px; letter-spacing:.1em;
-    text-transform:uppercase; color:var(--accent-2); margin:0 0 10px;
+  .cd-lbl{font-size:10.5px; text-transform:uppercase; letter-spacing:.12em; color:var(--muted); margin-top:5px;}
+  .cd-sep{
+    display:flex; align-items:center; font-family:'Roboto Mono',monospace;
+    font-size:clamp(20px,4vw,28px); color:var(--accent); font-weight:600; opacity:.6;
+    animation:blink 1s steps(1) infinite;
   }
+  @keyframes blink{ 50%{ opacity:.15; } }
+  @media (prefers-reduced-motion: reduce){ .cd-sep{animation:none;} }
 
   .cta-row{margin-top:28px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap;}
   .btn{
@@ -262,6 +270,25 @@
   .two-col{display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:start;}
   @media (max-width:760px){ .two-col{grid-template-columns:1fr;} }
 
+  /* BRIEFING (instrucoes do estabelecimento) */
+  .briefing-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  @media (max-width:820px){ .briefing-grid{grid-template-columns:1fr;} }
+  .briefing-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    padding:24px; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:12px;
+  }
+  .briefing-top{display:flex; align-items:center; gap:10px;}
+  .briefing-icon{
+    width:34px; height:34px; border-radius:9px; flex:none;
+    background:var(--accent-2-soft); display:flex; align-items:center; justify-content:center; font-size:16px;
+  }
+  .briefing-card h3{font-size:15.5px; letter-spacing:.03em;}
+  .briefing-card ol{margin:0; padding-left:20px; display:flex; flex-direction:column; gap:9px; font-size:14px; color:var(--muted); line-height:1.55;}
+  .briefing-card ol li::marker{color:var(--accent); font-weight:700; font-family:'Roboto Mono',monospace; font-size:13px;}
+  .briefing-card a{color:var(--accent); font-weight:600; text-decoration:underline; text-underline-offset:2px;}
+  .briefing-note{font-size:12.5px; color:var(--muted); margin:0; padding-top:10px; border-top:1px solid var(--line);}
+  .briefing-note a{color:var(--accent-2); font-weight:600; text-decoration:underline; text-underline-offset:2px;}
+
   footer{
     border-top:1px solid var(--line); padding:30px 0 44px; text-align:center;
     color:var(--muted); font-size:13px;
@@ -278,21 +305,23 @@
     <h1 class="title">KART DA<br><span>RESENHA</span></h1>
     <p class="subhead">A galera fechou: vai ter aceleração garantida, disputa de grid e resenha depois. Confirma sua vaga aí embaixo.</p>
 
-    <span class="cd-caption">Faltam para a largada</span>
-    <div class="countdown" aria-live="polite" aria-label="Contagem regressiva para o evento">
-      <div class="cd-seg"><span class="cd-val" id="cd-d">00</span><span class="cd-lbl">dias</span></div>
-      <span class="cd-sep">:</span>
-      <div class="cd-seg"><span class="cd-val" id="cd-h">00</span><span class="cd-lbl">horas</span></div>
-      <span class="cd-sep">:</span>
-      <div class="cd-seg"><span class="cd-val" id="cd-m">00</span><span class="cd-lbl">min</span></div>
-      <span class="cd-sep">:</span>
-      <div class="cd-seg"><span class="cd-val" id="cd-s">00</span><span class="cd-lbl">seg</span></div>
-    </div>
+    <div class="hero-meta">
+      <span class="cd-caption">Faltam para a largada</span>
+      <div class="countdown" aria-live="polite" aria-label="Contagem regressiva para o evento">
+        <div class="cd-seg"><span class="cd-val" id="cd-d">00</span><span class="cd-lbl">dias</span></div>
+        <span class="cd-sep">:</span>
+        <div class="cd-seg"><span class="cd-val" id="cd-h">00</span><span class="cd-lbl">horas</span></div>
+        <span class="cd-sep">:</span>
+        <div class="cd-seg"><span class="cd-val" id="cd-m">00</span><span class="cd-lbl">min</span></div>
+        <span class="cd-sep">:</span>
+        <div class="cd-seg"><span class="cd-val" id="cd-s">00</span><span class="cd-lbl">seg</span></div>
+      </div>
 
-    <div class="timing">
-      <div class="seg"><span class="lbl">Data</span><span class="val">04 / 10</span></div>
-      <div class="seg"><span class="lbl">Horário</span><span class="val">15:00</span></div>
-      <div class="seg"><span class="lbl">Local</span><span class="val" style="font-size:15px">RBC Vespasiano</span></div>
+      <div class="timing">
+        <div class="seg"><span class="lbl">Data</span><span class="val">04 / 10</span></div>
+        <div class="seg"><span class="lbl">Horário</span><span class="val">15:00</span></div>
+        <div class="seg"><span class="lbl">Local</span><span class="val" style="font-size:15px">RBC Vespasiano</span></div>
+      </div>
     </div>
 
     <div class="cta-row">
@@ -387,6 +416,37 @@
             </table>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="instrucoes">
+    <div class="section-head">
+      <span class="eyebrow">Direto do kartódromo</span>
+      <h2 class="section-title">Para agilizar seu atendimento</h2>
+      <p class="section-sub">Instruções oficiais do RBC Racing — lê com calma antes do dia da bateria.</p>
+    </div>
+    <div class="briefing-grid">
+      <div class="briefing-card">
+        <div class="briefing-top"><div class="briefing-icon">📋</div><h3>Cadastro</h3></div>
+        <ol>
+          <li>Envie pra todo mundo que vai correr o nosso link de cadastramento: <a href="https://rbcracing.com.br/cadastro" target="_blank" rel="noopener">rbcracing.com.br/cadastro ↗</a></li>
+          <li>Se você já é cadastrado, é só acessar o autoatendimento no dia da bateria com seu CPF ou e-mail cadastrado, escolher o horário agendado e assinar o termo de responsabilidade.</li>
+        </ol>
+      </div>
+      <div class="briefing-card">
+        <div class="briefing-top"><div class="briefing-icon">🎥</div><h3>Segurança</h3></div>
+        <ol>
+          <li>Assista com atenção o vídeo/briefing com as orientações de condução e segurança: <a href="https://rbcracing.com.br/briefing" target="_blank" rel="noopener">assistir briefing ↗</a>. Em caso de dúvidas, a equipe está à disposição pra saná-las no dia e horário do seu agendamento.</li>
+        </ol>
+      </div>
+      <div class="briefing-card">
+        <div class="briefing-top"><div class="briefing-icon">🏁</div><h3>Regras básicas</h3></div>
+        <ol>
+          <li>Menores de 18 anos desacompanhados dos pais devem trazer autorização expressa deles.</li>
+          <li>Chegue com pelo menos 45 minutos de antecedência (recomendação da casa: pelo menos 1 hora) calçando sapato fechado ou tênis.</li>
+        </ol>
+        <p class="briefing-note">Consulte o regulamento completo no site do <a href="https://rbcracing.com.br/kart-de-locacao/karts/kart-adulto/" target="_blank" rel="noopener">Kartódromo RBC Racing ↗</a>.</p>
       </div>
     </div>
   </section>
