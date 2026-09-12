@@ -1,0 +1,477 @@
+<title>Kart RBC Racing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#eef1f3;
+    --surface:#ffffff;
+    --surface-2:#e4e8eb;
+    --text:#14171b;
+    --muted:#5b6470;
+    --accent:#d81e2c;
+    --accent-ink:#ffffff;
+    --accent-2:#a86a03;
+    --accent-2-soft:#fbeecb;
+    --line:rgba(20,23,27,.12);
+    --shadow:0 12px 30px -14px rgba(20,23,27,.35);
+    --radius:14px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0a0c0f;
+      --surface:#15181d;
+      --surface-2:#1c2027;
+      --text:#eef0f2;
+      --muted:#98a0ab;
+      --accent:#ef2b35;
+      --accent-ink:#0a0c0f;
+      --accent-2:#f2b705;
+      --accent-2-soft:#2a2410;
+      --line:rgba(255,255,255,.1);
+      --shadow:0 16px 34px -14px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0a0c0f;
+    --surface:#15181d;
+    --surface-2:#1c2027;
+    --text:#eef0f2;
+    --muted:#98a0ab;
+    --accent:#ef2b35;
+    --accent-ink:#0a0c0f;
+    --accent-2:#f2b705;
+    --accent-2-soft:#2a2410;
+    --line:rgba(255,255,255,.1);
+    --shadow:0 16px 34px -14px rgba(0,0,0,.6);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'Oswald',system-ui,sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.02em;
+    text-wrap:balance;
+    margin:0;
+  }
+  .mono{font-family:'Roboto Mono',ui-monospace,monospace; font-variant-numeric:tabular-nums;}
+  a{color:inherit;}
+  .wrap{max-width:960px; margin:0 auto; padding:0 24px;}
+
+  /* checkered strip - deliberate flag motif, fixed black/white in both themes */
+  .checker{
+    height:14px;
+    background-image:
+      linear-gradient(45deg,#111 25%,transparent 25%,transparent 75%,#111 75%),
+      linear-gradient(45deg,#111 25%,transparent 25%,transparent 75%,#111 75%);
+    background-size:14px 14px;
+    background-position:0 0,7px 7px;
+    background-color:#f2f2f2;
+  }
+
+  /* HERO */
+  .hero{
+    position:relative;
+    overflow:hidden;
+    background:
+      radial-gradient(circle at 15% 0%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 55%),
+      linear-gradient(180deg, var(--surface) 0%, var(--bg) 100%);
+    border-bottom:1px solid var(--line);
+  }
+  .speedlines{
+    position:absolute; inset:0;
+    background-image:repeating-linear-gradient(100deg, color-mix(in srgb, var(--text) 5%, transparent) 0 2px, transparent 2px 46px);
+    animation:dash 5s linear infinite;
+    opacity:.5;
+    pointer-events:none;
+  }
+  @keyframes dash{ to{ background-position:-400px 0; } }
+  @media (prefers-reduced-motion: reduce){ .speedlines{animation:none;} }
+
+  .hero-inner{position:relative; padding:56px 24px 44px; text-align:center;}
+  .kicker{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'Roboto Mono',monospace; font-size:12.5px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--accent-2);
+    background:var(--accent-2-soft);
+    border:1px solid color-mix(in srgb, var(--accent-2) 40%, transparent);
+    padding:5px 12px; border-radius:999px;
+  }
+  h1.title{
+    font-size:clamp(2.6rem, 9vw, 5rem);
+    line-height:.92;
+    margin:18px 0 6px;
+    color:var(--text);
+  }
+  h1.title span{color:var(--accent);}
+  .subhead{
+    font-size:17px; color:var(--muted); max-width:46ch; margin:0 auto 28px;
+  }
+
+  .timing{
+    display:inline-flex; flex-wrap:wrap; justify-content:center; gap:0;
+    background:var(--surface); border:1px solid var(--line); border-radius:12px;
+    box-shadow:var(--shadow); overflow:hidden;
+  }
+  .timing .seg{
+    padding:14px 22px; text-align:left; border-right:1px solid var(--line);
+  }
+  .timing .seg:last-child{border-right:none;}
+  .timing .lbl{
+    display:block; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--muted); margin-bottom:3px;
+  }
+  .timing .val{font-family:'Roboto Mono',monospace; font-weight:600; font-size:19px;}
+
+  .cta-row{margin-top:28px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap;}
+  .btn{
+    font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:.04em;
+    font-size:15px; font-weight:600; padding:13px 26px; border-radius:10px;
+    border:1px solid transparent; cursor:pointer; text-decoration:none;
+    display:inline-flex; align-items:center; gap:8px;
+    transition:transform .15s ease;
+  }
+  .btn:active{transform:scale(.97);}
+  .btn-primary{background:var(--accent); color:var(--accent-ink); box-shadow:0 10px 22px -10px color-mix(in srgb, var(--accent) 70%, transparent);}
+  .btn-ghost{background:transparent; border-color:var(--line); color:var(--text);}
+
+  /* STATS */
+  .stats{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:1px; background:var(--line);
+    border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;
+    margin:-30px auto 0; max-width:960px; position:relative; z-index:2;
+    box-shadow:var(--shadow);
+  }
+  .stat{background:var(--surface); padding:18px 16px; text-align:center;}
+  .stat .n{font-family:'Roboto Mono',monospace; font-size:22px; font-weight:600; color:var(--accent);}
+  .stat .l{font-size:11.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; margin-top:4px;}
+
+  section{padding:64px 0;}
+  .section-head{margin-bottom:28px;}
+  .eyebrow{
+    font-family:'Roboto Mono',monospace; font-size:12px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--accent); display:block; margin-bottom:8px;
+  }
+  h2.section-title{font-size:clamp(1.6rem,4vw,2.2rem);}
+  .section-sub{color:var(--muted); margin-top:8px; max-width:60ch;}
+
+  /* LOCATION */
+  .loc-grid{display:grid; grid-template-columns:1.1fr 1fr; gap:24px;}
+  @media (max-width:760px){ .loc-grid{grid-template-columns:1fr;} }
+  .map-frame{
+    position:relative;
+    border-radius:var(--radius); overflow:hidden; border:1px solid var(--line);
+    box-shadow:var(--shadow); aspect-ratio:4/3;
+    background:
+      linear-gradient(180deg, transparent 60%, color-mix(in srgb, var(--bg) 70%, transparent) 100%),
+      repeating-linear-gradient(0deg, var(--surface-2) 0 1px, transparent 1px 34px),
+      repeating-linear-gradient(90deg, var(--surface-2) 0 1px, transparent 1px 34px),
+      var(--bg);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px;
+    text-decoration:none; color:var(--text);
+  }
+  .map-frame .pin{
+    width:46px; height:46px; border-radius:50% 50% 50% 0; transform:rotate(-45deg);
+    background:var(--accent); display:flex; align-items:center; justify-content:center;
+    box-shadow:0 10px 20px -8px color-mix(in srgb, var(--accent) 70%, transparent);
+  }
+  .map-frame .pin span{transform:rotate(45deg); font-size:18px;}
+  .map-frame .map-label{font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:.04em; font-size:16px;}
+  .map-frame .map-cta{font-size:13px; color:var(--muted);}
+  .map-frame .map-cta u{color:var(--accent); text-decoration:none; font-weight:600;}
+  .loc-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    padding:24px; display:flex; flex-direction:column; gap:14px; box-shadow:var(--shadow);
+  }
+  .loc-card .addr{font-size:15px; line-height:1.5;}
+  .loc-card .addr b{display:block; font-family:'Oswald',sans-serif; text-transform:uppercase; font-size:17px; letter-spacing:.01em;}
+  .rules{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px;}
+  .rules li{display:flex; gap:10px; font-size:14.5px; color:var(--muted); align-items:flex-start;}
+  .rules li b{color:var(--text); font-weight:600;}
+  .dot{width:6px; height:6px; border-radius:50%; background:var(--accent); margin-top:7px; flex:none;}
+
+  /* FORM */
+  .panel{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:28px;
+  }
+  .field{display:flex; flex-direction:column; gap:6px; margin-bottom:16px;}
+  .field label{font-size:12.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:600;}
+  .field input{
+    font:inherit; font-size:15.5px; padding:12px 14px; border-radius:9px;
+    border:1px solid var(--line); background:var(--bg); color:var(--text);
+  }
+  .field input:focus{outline:2px solid var(--accent); outline-offset:1px;}
+  .field .hint{font-size:12.5px; color:var(--muted);}
+  .form-msg{
+    font-size:14px; padding:11px 14px; border-radius:9px; margin-top:4px; display:none;
+  }
+  .form-msg.ok{display:block; background:color-mix(in srgb, #1a9c56 18%, transparent); color:#1a9c56; border:1px solid color-mix(in srgb,#1a9c56 40%,transparent);}
+  .form-msg.err{display:block; background:color-mix(in srgb, var(--accent) 15%, transparent); color:var(--accent); border:1px solid color-mix(in srgb,var(--accent) 40%,transparent);}
+  .form-msg.warn{display:block; background:var(--accent-2-soft); color:var(--accent-2); border:1px solid color-mix(in srgb,var(--accent-2) 40%,transparent);}
+
+  /* GRID / TABLE */
+  .grid-table{width:100%; border-collapse:collapse; font-size:14.5px;}
+  .grid-table th{
+    text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.08em;
+    color:var(--muted); padding:0 12px 10px; border-bottom:1px solid var(--line); font-weight:600;
+  }
+  .grid-table td{padding:11px 12px; border-bottom:1px solid var(--line); vertical-align:middle;}
+  .grid-table tr:last-child td{border-bottom:none;}
+  .pos{
+    font-family:'Roboto Mono',monospace; font-weight:600; color:var(--accent);
+    width:44px;
+  }
+  .via{color:var(--muted); font-size:13.5px;}
+  .via b{color:var(--text); font-weight:500;}
+  .table-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); box-shadow:var(--shadow);}
+  .table-scroll{min-width:420px;}
+  .empty-row td{color:var(--muted); text-align:center; padding:26px; font-style:italic;}
+
+  .two-col{display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:start;}
+  @media (max-width:760px){ .two-col{grid-template-columns:1fr;} }
+
+  footer{
+    border-top:1px solid var(--line); padding:30px 0 44px; text-align:center;
+    color:var(--muted); font-size:13px;
+  }
+  footer .flag{font-family:'Oswald',sans-serif; letter-spacing:.06em; color:var(--text); text-transform:uppercase; font-weight:600; margin-bottom:4px;}
+</style>
+
+<div class="checker"></div>
+
+<div class="hero">
+  <div class="speedlines"></div>
+  <div class="hero-inner">
+    <span class="kicker">🏁 RBC Racing Vespasiano</span>
+    <h1 class="title">KART DA<br><span>RESENHA</span></h1>
+    <p class="subhead">A galera fechou: vai ter aceleração garantida, disputa de grid e resenha depois. Confirma sua vaga aí embaixo.</p>
+
+    <div class="timing">
+      <div class="seg"><span class="lbl">Data</span><span class="val">04 / 10</span></div>
+      <div class="seg"><span class="lbl">Horário</span><span class="val">15:00</span></div>
+      <div class="seg"><span class="lbl">Local</span><span class="val" style="font-size:15px">RBC Vespasiano</span></div>
+    </div>
+
+    <div class="cta-row">
+      <a href="#reserva" class="btn btn-primary">Fazer minha reserva</a>
+      <a href="#grid" class="btn btn-ghost">Ver quem já confirmou</a>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="stats">
+    <div class="stat"><div class="n">140kg</div><div class="l">Peso máximo</div></div>
+    <div class="stat"><div class="n">R$160</div><div class="l">Preço médio</div></div>
+    <div class="stat"><div class="n" id="stat-confirmados">—</div><div class="l">Confirmados</div></div>
+    <div class="stat"><div class="n">P1</div><div class="l">Quem for mais rápido, leva o respeito</div></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <section id="local">
+    <div class="section-head">
+      <span class="eyebrow">Onde acelerar</span>
+      <h2 class="section-title">O ponto de encontro</h2>
+      <p class="section-sub">Pista, boxe e arquibancada — tudo no mesmo endereço. Chega uns minutos antes pra já ir com o capacete na mão.</p>
+    </div>
+    <div class="loc-grid">
+      <a class="map-frame" href="https://www.google.com/maps/search/?api=1&query=RBC+Racing+Vespasiano" target="_blank" rel="noopener">
+        <div class="pin"><span>🏁</span></div>
+        <div class="map-label">RBC Racing Vespasiano</div>
+        <div class="map-cta"><u>Abrir no Google Maps ↗</u></div>
+      </a>
+      <div class="loc-card">
+        <div class="addr">
+          <b>RBC Racing Vespasiano</b>
+          Kartódromo — Vespasiano, MG
+        </div>
+        <ul class="rules">
+          <li><span class="dot"></span><span><b>Peso máximo:</b> 140kg por piloto.</span></li>
+          <li><span class="dot"></span><span><b>Preço médio:</b> R$160 por bateria (confirmar no local).</span></li>
+          <li><span class="dot"></span><span><b>Leve:</b> documento e disposição — capacete e macacão são da casa.</span></li>
+        </ul>
+        <a class="btn btn-ghost" style="align-self:flex-start" href="https://www.google.com/maps/search/?api=1&query=RBC+Racing+Vespasiano" target="_blank" rel="noopener">Abrir no Google Maps ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="reserva">
+    <div class="two-col">
+      <div>
+        <div class="section-head">
+          <span class="eyebrow">Grid de largada</span>
+          <h2 class="section-title">Garanta seu carrinho</h2>
+          <p class="section-sub">Escreve seu nome e, se alguém te chamou pro rolê, marca quem foi — a lista de indicação some quando você começa a digitar um nome que já tá na pista.</p>
+        </div>
+        <div class="panel">
+          <form id="form-reserva" autocomplete="off">
+            <div class="field">
+              <label for="nome">Seu nome</label>
+              <input id="nome" name="nome" type="text" placeholder="Ex: Toddi" required>
+            </div>
+            <div class="field">
+              <label for="indicadoPor">Indicado por (opcional)</label>
+              <input id="indicadoPor" name="indicadoPor" type="text" list="lista-pilotos" placeholder="Começa a digitar um nome já confirmado…">
+              <datalist id="lista-pilotos"></datalist>
+              <span class="hint">Se o nome já existir na lista, ele aparece pra você escolher. Se não existir, sem problema — a gente registra do mesmo jeito.</span>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Confirmar presença 🏁</button>
+            <div id="form-msg" class="form-msg"></div>
+          </form>
+        </div>
+      </div>
+
+      <div id="grid">
+        <div class="section-head">
+          <span class="eyebrow">Grid de largada</span>
+          <h2 class="section-title">Quem já confirmou</h2>
+          <p class="section-sub">Atualiza sozinho direto da planilha.</p>
+        </div>
+        <div class="table-wrap">
+          <div class="table-scroll">
+            <table class="grid-table">
+              <thead>
+                <tr><th class="pos">P#</th><th>Piloto</th><th>Indicado por</th></tr>
+              </thead>
+              <tbody id="tbody-grid">
+                <tr class="empty-row"><td colspan="3">Carregando grid…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="flag">🏁 RBC Racing Vespasiano</div>
+  Vem acelerar com a gente.
+</footer>
+
+<script>
+  // ---------------------------------------------------------------
+  // CONFIGURAÇÃO: cole aqui a URL do Web App do Apps Script (doGet/doPost)
+  // depois de publicar o script anexado à planilha "seleção kart".
+  // ---------------------------------------------------------------
+  const WEBHOOK_URL = "";
+
+  const EXAMPLE_DATA = [
+    { nome: "toddi", indicadoPor: "" },
+    { nome: "fly", indicadoPor: "toddi" },
+    { nome: "eduardo", indicadoPor: "toddi" },
+    { nome: "batata", indicadoPor: "" },
+    { nome: "kesley", indicadoPor: "batata" },
+    { nome: "victor", indicadoPor: "batata" },
+    { nome: "Adriano", indicadoPor: "batata" },
+    { nome: "naider", indicadoPor: "toddi" }
+  ];
+
+  let currentData = [];
+
+  function renderGrid(data){
+    const tbody = document.getElementById('tbody-grid');
+    const statEl = document.getElementById('stat-confirmados');
+    statEl.textContent = data.length;
+    if(!data.length){
+      tbody.innerHTML = '<tr class="empty-row"><td colspan="3">Ninguém confirmou ainda — seja o primeiro!</td></tr>';
+      return;
+    }
+    tbody.innerHTML = data.map((row, i) => `
+      <tr>
+        <td class="pos">P${i+1}</td>
+        <td>${escapeHtml(row.nome)}</td>
+        <td class="via">${row.indicadoPor ? 'via <b>' + escapeHtml(row.indicadoPor) + '</b>' : '—'}</td>
+      </tr>
+    `).join('');
+  }
+
+  function renderAutocomplete(data){
+    const list = document.getElementById('lista-pilotos');
+    const unique = [...new Set(data.map(r => r.nome))];
+    list.innerHTML = unique.map(n => `<option value="${escapeHtml(n)}">`).join('');
+  }
+
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function applyData(data){
+    currentData = data;
+    renderGrid(data);
+    renderAutocomplete(data);
+  }
+
+  function loadFromWebhook(){
+    if(!WEBHOOK_URL){
+      applyData(EXAMPLE_DATA);
+      return;
+    }
+    const cbName = 'kartCb_' + Date.now();
+    const script = document.createElement('script');
+    let done = false;
+    window[cbName] = function(data){
+      done = true;
+      applyData(Array.isArray(data) ? data : EXAMPLE_DATA);
+      delete window[cbName];
+      script.remove();
+    };
+    script.src = WEBHOOK_URL + (WEBHOOK_URL.includes('?') ? '&' : '?') + 'callback=' + cbName;
+    script.onerror = function(){
+      if(!done){ applyData(EXAMPLE_DATA); }
+    };
+    document.body.appendChild(script);
+    setTimeout(function(){
+      if(!done){ applyData(EXAMPLE_DATA); }
+    }, 6000);
+  }
+
+  document.getElementById('form-reserva').addEventListener('submit', function(e){
+    e.preventDefault();
+    const nome = document.getElementById('nome').value.trim();
+    const indicadoPor = document.getElementById('indicadoPor').value.trim();
+    const msg = document.getElementById('form-msg');
+    msg.className = 'form-msg';
+
+    if(!nome){ return; }
+
+    const jaExiste = currentData.some(r => r.nome.toLowerCase() === nome.toLowerCase());
+    if(jaExiste){
+      msg.className = 'form-msg warn';
+      msg.textContent = 'Você já está confirmado no grid — não precisa reservar de novo!';
+      return;
+    }
+
+    if(!WEBHOOK_URL){
+      msg.className = 'form-msg warn';
+      msg.textContent = 'O formulário ainda não está conectado à planilha. Peça pro organizador configurar o link do Apps Script.';
+      return;
+    }
+
+    fetch(WEBHOOK_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ nome, indicadoPor })
+    }).catch(function(){ /* opaque no-cors response, ignore */ });
+
+    applyData([...currentData, { nome, indicadoPor }]);
+    msg.className = 'form-msg ok';
+    msg.textContent = 'Presença confirmada! Bora acelerar. 🏁';
+    document.getElementById('form-reserva').reset();
+
+    setTimeout(loadFromWebhook, 2500);
+  });
+
+  loadFromWebhook();
+</script>
