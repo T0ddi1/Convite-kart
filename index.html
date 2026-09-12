@@ -232,15 +232,18 @@
     position:relative; border:1px solid var(--line-strong); overflow:hidden;
     aspect-ratio:4/3; background:var(--surface-2);
   }
-  .map-frame iframe{width:100%; height:100%; border:0; display:block; filter:grayscale(.4) invert(.92) contrast(.9);}
+  .map-frame iframe{width:100%; height:100%; border:0; display:block;}
   .loc-card{
     background:var(--surface); border:1px solid var(--line-strong);
     padding:24px; display:flex; flex-direction:column; gap:16px;
   }
-  .spec{display:flex; flex-direction:column; gap:8px;}
+  .spec{display:flex; flex-direction:column; gap:10px;}
   .spec-row{display:flex; gap:12px; align-items:baseline;}
   .spec-k{font-family:'Roboto Mono',monospace; font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--gold); width:64px; flex:none;}
   .spec-v{font-family:'Oswald',sans-serif; text-transform:uppercase; font-size:16px; letter-spacing:.01em;}
+  .spec-wide .spec-row{align-items:flex-start;}
+  .spec-wide .spec-k{width:96px; padding-top:2px;}
+  .spec-wide .spec-v{font-family:'Inter',sans-serif; text-transform:none; font-size:14.5px; font-weight:500; line-height:1.4;}
   .rules{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:11px; border-top:1px solid var(--line); padding-top:14px;}
   .rules li{display:flex; gap:10px; font-size:14px; color:var(--muted); align-items:flex-start; line-height:1.5;}
   .rules li b{color:var(--ink); font-weight:600;}
@@ -318,6 +321,12 @@
   .briefing-note{font-size:12.5px; color:var(--muted); margin:0; padding-top:10px; border-top:1px solid var(--line);}
   .briefing-note a{color:var(--gold); font-weight:600; text-decoration:underline; text-underline-offset:2px;}
 
+  .ext-link{display:inline-flex; align-items:center; gap:4px; white-space:nowrap;}
+  .ext-icon{flex:none; display:inline-block;}
+
+  /* HERO CANVAS (streaks de velocidade em movimento) */
+  .hero-canvas{position:absolute; inset:0; z-index:0; opacity:.55; pointer-events:none;}
+
   footer{
     border-top:1px solid var(--line-strong); padding:32px 0 46px; text-align:center;
     color:var(--muted); font-size:13px;
@@ -329,6 +338,7 @@
 
 <div class="hero">
   <div class="speedlines"></div>
+  <canvas class="hero-canvas" id="hero-canvas" aria-hidden="true"></canvas>
   <div class="hero-watermark" aria-hidden="true">04</div>
   <div class="hero-spine" aria-hidden="true">RBC RACING · VESPASIANO · KART</div>
   <div class="hero-inner">
@@ -404,7 +414,23 @@
           <li><span class="dot"></span><span><b>Preço médio:</b> R$160 por bateria (confirmar no local).</span></li>
           <li><span class="dot"></span><span><b>Leve:</b> coragem e disposição — todos os equipamentos necessários para correr são fornecidos pelo estabelecimento.</span></li>
         </ul>
-        <a class="btn btn-ghost" style="align-self:flex-start" href="https://www.google.com/maps/search/?api=1&query=RBC+Racing+Vespasiano" target="_blank" rel="noopener">Abrir no Google Maps ↗</a>
+        <a class="btn btn-ghost ext-link" style="align-self:flex-start" href="https://www.google.com/maps/search/?api=1&query=RBC+Racing+Vespasiano" target="_blank" rel="noopener">Abrir no Google Maps<svg class="ext-icon" width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M17 7H9M17 7V15" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <section id="kart">
+    <div class="section-head">
+      <span class="eyebrow">Spec Sheet</span>
+      <h2 class="section-title">O kart</h2>
+      <p class="section-sub">Ficha técnica direto do RBC Racing.</p>
+    </div>
+    <div class="loc-card panel reveal spec-wide">
+      <div class="spec">
+        <div class="spec-row"><span class="spec-k">Motor</span><span class="spec-v">Honda 13HP, com cercado de borracha nas laterais pra correr com mais segurança.</span></div>
+        <div class="spec-row"><span class="spec-k">Equipamento</span><span class="spec-v">Todos os equipamentos de segurança (capacete, balaclava, luvas e pescoceira) estão inclusos na locação.</span></div>
+        <div class="spec-row"><span class="spec-k">Resultado</span><span class="spec-v">Resultado da corrida enviado por e-mail, pelo app My Lap Time ou direto na recepção.</span></div>
+        <div class="spec-row"><span class="spec-k">Traçado</span><span class="spec-v">A definir no dia.</span></div>
       </div>
     </div>
   </section>
@@ -469,14 +495,14 @@
       <div class="briefing-card reveal">
         <div class="briefing-top"><span class="briefing-num">01</span><h3>Cadastro</h3></div>
         <ol>
-          <li>Manda esse link de cadastro do RBC Racing pra todo mundo que vai correr: <a href="https://rbcracing.com.br/cadastro" target="_blank" rel="noopener">rbcracing.com.br/cadastro ↗</a></li>
+          <li>Faça o pré-cadastro no site do RBC Racing e manda esse link pra todo mundo que vai correr: <a class="ext-link" href="https://rbcracing.com.br/cadastro" target="_blank" rel="noopener">rbcracing.com.br/cadastro<svg class="ext-icon" width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M17 7H9M17 7V15" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
           <li>Quem já é cadastrado só usa o autoatendimento no dia da bateria com CPF ou e-mail, escolhe o horário agendado e assina o termo de responsabilidade.</li>
         </ol>
       </div>
       <div class="briefing-card reveal">
         <div class="briefing-top"><span class="briefing-num">02</span><h3>Segurança</h3></div>
         <ol>
-          <li>Assistam com atenção o vídeo/briefing oficial de condução e segurança da pista: <a href="https://rbcracing.com.br/briefing" target="_blank" rel="noopener">assistir briefing ↗</a>. Dúvida a equipe do RBC tira no dia e horário do agendamento.</li>
+          <li>Assistam com atenção o vídeo/briefing oficial de condução e segurança da pista: <a class="ext-link" href="https://rbcracing.com.br/briefing" target="_blank" rel="noopener">assistir briefing<svg class="ext-icon" width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M17 7H9M17 7V15" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>. Dúvida a equipe do RBC tira no dia e horário do agendamento.</li>
         </ol>
       </div>
       <div class="briefing-card reveal">
@@ -485,7 +511,7 @@
           <li>Menores de 18 anos desacompanhados dos pais precisam trazer autorização expressa deles.</li>
           <li>Chegue com pelo menos 45 minutos de antecedência (a real: chega com 1 hora) calçando sapato fechado ou tênis.</li>
         </ol>
-        <p class="briefing-note">Regulamento completo no site do <a href="https://rbcracing.com.br/kart-de-locacao/karts/kart-adulto/" target="_blank" rel="noopener">Kartódromo RBC Racing ↗</a>.</p>
+        <p class="briefing-note">Regulamento completo no site do <a class="ext-link" href="https://rbcracing.com.br/kart-de-locacao/karts/kart-adulto/" target="_blank" rel="noopener">Kartódromo RBC Racing<svg class="ext-icon" width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M17 7H9M17 7V15" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>.</p>
       </div>
     </div>
   </section>
@@ -638,6 +664,66 @@
   }
   updateCountdown();
   setInterval(updateCountdown, 1000);
+
+  // ---- Streaks de velocidade em movimento no fundo do hero (canvas 2D leve) ----
+  (function(){
+    const canvas = document.getElementById('hero-canvas');
+    if(!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const hero = canvas.parentElement;
+    const reduceMotionCanvas = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let w, h;
+
+    function resize(){
+      w = canvas.width = hero.clientWidth;
+      h = canvas.height = hero.clientHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function makeStreak(){
+      return {
+        x: Math.random() * w,
+        y: Math.random() * h,
+        len: 110 + Math.random() * 190,
+        speed: 1.6 + Math.random() * 2.6,
+        red: Math.random() > 0.55,
+        alpha: 0.10 + Math.random() * 0.22,
+        width: 1 + Math.random() * 1.6
+      };
+    }
+    const streaks = Array.from({ length: 14 }, makeStreak);
+
+    function frame(){
+      ctx.clearRect(0, 0, w, h);
+      streaks.forEach(s => {
+        const x2 = s.x + s.len, y2 = s.y - s.len * 0.16;
+        const grad = ctx.createLinearGradient(s.x, s.y, x2, y2);
+        const rgb = s.red ? '230,33,44' : '255,255,255';
+        grad.addColorStop(0, `rgba(${rgb},0)`);
+        grad.addColorStop(0.5, `rgba(${rgb},${s.alpha})`);
+        grad.addColorStop(1, `rgba(${rgb},0)`);
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = s.width;
+        ctx.beginPath();
+        ctx.moveTo(s.x, s.y);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+        s.x += s.speed * 3.2;
+        s.y -= s.speed * 0.5;
+        if(s.x > w + s.len){
+          s.x = -s.len - Math.random() * w * 0.5;
+          s.y = Math.random() * h;
+        }
+      });
+    }
+
+    if(reduceMotionCanvas){
+      frame();
+    } else {
+      (function loop(){ frame(); requestAnimationFrame(loop); })();
+    }
+  })();
 
   // ---- Sequência de luzes de largada (estilo F1), uma vez ao carregar ----
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
