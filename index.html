@@ -802,6 +802,42 @@
 
   const formFields = document.getElementById('form-fields');
   const btnOutroPiloto = document.getElementById('btn-outro-piloto');
+  const formMsgEl = document.getElementById('form-msg');
+  const RESERVA_STORAGE_KEY = 'kartReservaConfirmada';
+
+  function lerReservaSalva(){
+    try {
+      const raw = localStorage.getItem(RESERVA_STORAGE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch(e){
+      return null;
+    }
+  }
+
+  function salvarReserva(nome){
+    try {
+      localStorage.setItem(RESERVA_STORAGE_KEY, JSON.stringify({ nome }));
+    } catch(e){ /* localStorage indisponível (modo privado etc.), sem problema */ }
+  }
+
+  function limparReservaSalva(){
+    try { localStorage.removeItem(RESERVA_STORAGE_KEY); } catch(e){}
+  }
+
+  function mostrarConfirmado(nome){
+    formFields.style.display = 'none';
+    btnOutroPiloto.style.display = 'flex';
+    formMsgEl.className = 'form-msg ok';
+    formMsgEl.textContent = nome
+      ? 'Presença confirmada, ' + nome + '! Bora acelerar.'
+      : 'Presença confirmada! Bora acelerar.';
+  }
+
+  // Se já confirmou antes nesse navegador, mantém esse estado mesmo depois de um F5
+  const reservaSalva = lerReservaSalva();
+  if(reservaSalva){
+    mostrarConfirmado(reservaSalva.nome);
+  }
 
   document.getElementById('form-reserva').addEventListener('submit', function(e){
     e.preventDefault();
@@ -833,22 +869,21 @@
     }).catch(function(){ /* opaque no-cors response, ignore */ });
 
     applyData([...currentData, { nome, indicadoPor }]);
-    msg.className = 'form-msg ok';
-    msg.textContent = 'Presença confirmada! Bora acelerar.';
     document.getElementById('form-reserva').reset();
 
-    // esconde o formulario e mostra só a confirmação + botão pra inscrever outro piloto
-    formFields.style.display = 'none';
-    btnOutroPiloto.style.display = 'flex';
+    // guarda no localStorage pra não perder esse estado se der F5
+    salvarReserva(nome);
+    mostrarConfirmado(nome);
 
     // recarrega a lista de confirmados da planilha pra refletir o registro real
     setTimeout(loadFromWebhook, 2500);
   });
 
   btnOutroPiloto.addEventListener('click', function(){
+    limparReservaSalva();
     formFields.style.display = '';
     btnOutroPiloto.style.display = 'none';
-    document.getElementById('form-msg').className = 'form-msg';
+    formMsgEl.className = 'form-msg';
     document.getElementById('nome').focus();
   });
 
