@@ -780,28 +780,22 @@
     revealEls.forEach(el => el.classList.add('in-view'));
   }
 
-  function loadFromWebhook(){
+  async function loadFromWebhook(){
     if(!WEBHOOK_URL){
       applyData(EXAMPLE_DATA);
       return;
     }
-    const cbName = 'kartCb_' + Date.now();
-    const script = document.createElement('script');
-    let done = false;
-    window[cbName] = function(data){
-      done = true;
+    // O Apps Script libera CORS pra fetch() comum, mas devolve 404 quando a URL
+    // tem "?callback=" (colide com o proprio mecanismo interno de redirecionamento
+    // do Google) -- por isso usamos fetch() direto em vez de JSONP.
+    try {
+      const res = await fetch(WEBHOOK_URL, { cache: 'no-store' });
+      if(!res.ok) throw new Error('status ' + res.status);
+      const data = await res.json();
       applyData(Array.isArray(data) ? data : EXAMPLE_DATA);
-      delete window[cbName];
-      script.remove();
-    };
-    script.src = WEBHOOK_URL + (WEBHOOK_URL.includes('?') ? '&' : '?') + 'callback=' + cbName;
-    script.onerror = function(){
-      if(!done){ applyData(EXAMPLE_DATA); }
-    };
-    document.body.appendChild(script);
-    setTimeout(function(){
-      if(!done){ applyData(EXAMPLE_DATA); }
-    }, 6000);
+    } catch(err){
+      applyData(EXAMPLE_DATA);
+    }
   }
 
   const formFields = document.getElementById('form-fields');
