@@ -430,7 +430,6 @@
         <div class="spec-row"><span class="spec-k">Motor</span><span class="spec-v">Honda 13HP, com cercado de borracha nas laterais pra correr com mais segurança.</span></div>
         <div class="spec-row"><span class="spec-k">Equipamento</span><span class="spec-v">Todos os equipamentos de segurança (capacete, balaclava, luvas e pescoceira) estão inclusos na locação.</span></div>
         <div class="spec-row"><span class="spec-k">Resultado</span><span class="spec-v">Resultado da corrida enviado por e-mail, pelo app My Lap Time ou direto na recepção.</span></div>
-        <div class="spec-row"><span class="spec-k">Traçado</span><span class="spec-v">A definir no dia.</span></div>
       </div>
     </div>
   </section>
@@ -671,7 +670,6 @@
     if(!canvas) return;
     const ctx = canvas.getContext('2d');
     const hero = canvas.parentElement;
-    const reduceMotionCanvas = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let w, h;
 
     function resize(){
@@ -718,11 +716,10 @@
       });
     }
 
-    if(reduceMotionCanvas){
-      frame();
-    } else {
-      (function loop(){ frame(); requestAnimationFrame(loop); })();
-    }
+    // O usuario pediu explicitamente movimento visivel no fundo do hero,
+    // entao esse efeito roda sempre (nao segue prefers-reduced-motion como
+    // as outras animacoes do site).
+    (function loop(){ frame(); requestAnimationFrame(loop); })();
   })();
 
   // ---- Sequência de luzes de largada (estilo F1), uma vez ao carregar ----
