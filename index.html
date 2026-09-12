@@ -472,20 +472,23 @@
         </div>
         <div class="panel">
           <form id="form-reserva" autocomplete="off">
-            <div class="field">
-              <label for="nome">Seu nome</label>
-              <input id="nome" name="nome" type="text" placeholder="Ex: Toddi" required>
-            </div>
-            <div class="field">
-              <label for="indicadoPor">Indicado por (opcional)</label>
-              <div class="combo">
-                <input id="indicadoPor" name="indicadoPor" type="text" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="combo-list" placeholder="Começa a digitar um nome já confirmado…">
-                <ul class="combo-list" id="combo-list" role="listbox"></ul>
+            <div id="form-fields">
+              <div class="field">
+                <label for="nome">Seu nome</label>
+                <input id="nome" name="nome" type="text" placeholder="Ex: Toddi" required>
               </div>
-              <span class="hint">Se o nome já existir na lista, ele aparece pra você escolher. Se não existir, sem problema — a gente registra do mesmo jeito.</span>
+              <div class="field">
+                <label for="indicadoPor">Indicado por (opcional)</label>
+                <div class="combo">
+                  <input id="indicadoPor" name="indicadoPor" type="text" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="combo-list" placeholder="Começa a digitar um nome já confirmado…">
+                  <ul class="combo-list" id="combo-list" role="listbox"></ul>
+                </div>
+                <span class="hint">Se o nome já existir na lista, ele aparece pra você escolher. Se não existir, sem problema — a gente registra do mesmo jeito.</span>
+              </div>
+              <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Confirmar presença<svg class="ico-flag" width="14" height="14" viewBox="0 0 18 16" fill="none" aria-hidden="true"><rect x="1" y="0" width="1.6" height="16" fill="currentColor"/><rect x="3.6" y="1.2" width="3.1" height="3.1" fill="currentColor"/><rect x="9.8" y="1.2" width="3.1" height="3.1" fill="currentColor" opacity="0.35"/><rect x="6.7" y="4.3" width="3.1" height="3.1" fill="currentColor" opacity="0.35"/><rect x="12.9" y="4.3" width="3.1" height="3.1" fill="currentColor"/><rect x="3.6" y="7.4" width="3.1" height="3.1" fill="currentColor"/><rect x="9.8" y="7.4" width="3.1" height="3.1" fill="currentColor" opacity="0.35"/></svg></button>
             </div>
-            <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Confirmar presença<svg class="ico-flag" width="14" height="14" viewBox="0 0 18 16" fill="none" aria-hidden="true"><rect x="1" y="0" width="1.6" height="16" fill="currentColor"/><rect x="3.6" y="1.2" width="3.1" height="3.1" fill="currentColor"/><rect x="9.8" y="1.2" width="3.1" height="3.1" fill="currentColor" opacity="0.35"/><rect x="6.7" y="4.3" width="3.1" height="3.1" fill="currentColor" opacity="0.35"/><rect x="12.9" y="4.3" width="3.1" height="3.1" fill="currentColor"/><rect x="3.6" y="7.4" width="3.1" height="3.1" fill="currentColor"/><rect x="9.8" y="7.4" width="3.1" height="3.1" fill="currentColor" opacity="0.35"/></svg></button>
             <div id="form-msg" class="form-msg"></div>
+            <button type="button" id="btn-outro-piloto" class="btn btn-ghost" style="display:none; width:100%; justify-content:center; margin-top:14px;">Inscrever outro piloto</button>
           </form>
         </div>
       </div>
@@ -799,6 +802,9 @@
     }, 6000);
   }
 
+  const formFields = document.getElementById('form-fields');
+  const btnOutroPiloto = document.getElementById('btn-outro-piloto');
+
   document.getElementById('form-reserva').addEventListener('submit', function(e){
     e.preventDefault();
     const nome = document.getElementById('nome').value.trim();
@@ -833,7 +839,19 @@
     msg.textContent = 'Presença confirmada! Bora acelerar.';
     document.getElementById('form-reserva').reset();
 
+    // esconde o formulario e mostra só a confirmação + botão pra inscrever outro piloto
+    formFields.style.display = 'none';
+    btnOutroPiloto.style.display = 'flex';
+
+    // recarrega a lista de confirmados da planilha pra refletir o registro real
     setTimeout(loadFromWebhook, 2500);
+  });
+
+  btnOutroPiloto.addEventListener('click', function(){
+    formFields.style.display = '';
+    btnOutroPiloto.style.display = 'none';
+    document.getElementById('form-msg').className = 'form-msg';
+    document.getElementById('nome').focus();
   });
 
   loadFromWebhook();
