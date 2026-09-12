@@ -130,6 +130,27 @@
   }
   .timing .val{font-family:'Roboto Mono',monospace; font-weight:600; font-size:19px;}
 
+  /* COUNTDOWN */
+  .countdown{
+    display:inline-flex; align-items:stretch; gap:2px; margin:0 0 22px;
+    background:var(--surface-2); border:1px solid var(--line); border-radius:12px;
+    padding:4px; box-shadow:var(--shadow);
+  }
+  .cd-seg{
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    background:var(--surface); border-radius:8px; padding:10px 14px; min-width:64px;
+  }
+  .cd-val{
+    font-family:'Roboto Mono',monospace; font-variant-numeric:tabular-nums;
+    font-size:26px; font-weight:600; color:var(--accent); line-height:1;
+  }
+  .cd-lbl{font-size:10px; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); margin-top:4px;}
+  .cd-sep{display:flex; align-items:center; font-family:'Roboto Mono',monospace; font-size:20px; color:var(--line); font-weight:600;}
+  .cd-caption{
+    display:block; font-family:'Roboto Mono',monospace; font-size:11px; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--accent-2); margin:0 0 10px;
+  }
+
   .cta-row{margin-top:28px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap;}
   .btn{
     font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:.04em;
@@ -169,24 +190,9 @@
   .map-frame{
     position:relative;
     border-radius:var(--radius); overflow:hidden; border:1px solid var(--line);
-    box-shadow:var(--shadow); aspect-ratio:4/3;
-    background:
-      linear-gradient(180deg, transparent 60%, color-mix(in srgb, var(--bg) 70%, transparent) 100%),
-      repeating-linear-gradient(0deg, var(--surface-2) 0 1px, transparent 1px 34px),
-      repeating-linear-gradient(90deg, var(--surface-2) 0 1px, transparent 1px 34px),
-      var(--bg);
-    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px;
-    text-decoration:none; color:var(--text);
+    box-shadow:var(--shadow); aspect-ratio:4/3; background:var(--surface-2);
   }
-  .map-frame .pin{
-    width:46px; height:46px; border-radius:50% 50% 50% 0; transform:rotate(-45deg);
-    background:var(--accent); display:flex; align-items:center; justify-content:center;
-    box-shadow:0 10px 20px -8px color-mix(in srgb, var(--accent) 70%, transparent);
-  }
-  .map-frame .pin span{transform:rotate(45deg); font-size:18px;}
-  .map-frame .map-label{font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:.04em; font-size:16px;}
-  .map-frame .map-cta{font-size:13px; color:var(--muted);}
-  .map-frame .map-cta u{color:var(--accent); text-decoration:none; font-weight:600;}
+  .map-frame iframe{width:100%; height:100%; border:0; display:block; filter:grayscale(.15) contrast(1.05);}
   .loc-card{
     background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
     padding:24px; display:flex; flex-direction:column; gap:14px; box-shadow:var(--shadow);
@@ -211,6 +217,23 @@
   }
   .field input:focus{outline:2px solid var(--accent); outline-offset:1px;}
   .field .hint{font-size:12.5px; color:var(--muted);}
+
+  /* COMBOBOX (autocomplete "indicado por") */
+  .combo{position:relative;}
+  .combo-list{
+    position:absolute; left:0; right:0; top:calc(100% + 6px); z-index:10;
+    background:var(--surface); border:1px solid var(--line); border-radius:10px;
+    box-shadow:var(--shadow); max-height:220px; overflow-y:auto; padding:6px;
+    list-style:none; margin:0; display:none;
+  }
+  .combo-list.open{display:block;}
+  .combo-list li{
+    padding:9px 12px; border-radius:7px; cursor:pointer; font-size:14.5px;
+    display:flex; align-items:center; justify-content:space-between; gap:8px;
+  }
+  .combo-list li mark{background:var(--accent-2-soft); color:var(--accent-2); border-radius:3px; padding:0 1px;}
+  .combo-list li:hover, .combo-list li.active{background:var(--surface-2);}
+  .combo-list li .tag{font-size:11px; color:var(--muted); font-family:'Roboto Mono',monospace;}
   .form-msg{
     font-size:14px; padding:11px 14px; border-radius:9px; margin-top:4px; display:none;
   }
@@ -251,9 +274,20 @@
 <div class="hero">
   <div class="speedlines"></div>
   <div class="hero-inner">
-    <span class="kicker">🏁 RBC Racing Vespasiano</span>
+    <span class="kicker">🏁 4ª Edição · RBC Racing Vespasiano</span>
     <h1 class="title">KART DA<br><span>RESENHA</span></h1>
     <p class="subhead">A galera fechou: vai ter aceleração garantida, disputa de grid e resenha depois. Confirma sua vaga aí embaixo.</p>
+
+    <span class="cd-caption">Faltam para a largada</span>
+    <div class="countdown" aria-live="polite" aria-label="Contagem regressiva para o evento">
+      <div class="cd-seg"><span class="cd-val" id="cd-d">00</span><span class="cd-lbl">dias</span></div>
+      <span class="cd-sep">:</span>
+      <div class="cd-seg"><span class="cd-val" id="cd-h">00</span><span class="cd-lbl">horas</span></div>
+      <span class="cd-sep">:</span>
+      <div class="cd-seg"><span class="cd-val" id="cd-m">00</span><span class="cd-lbl">min</span></div>
+      <span class="cd-sep">:</span>
+      <div class="cd-seg"><span class="cd-val" id="cd-s">00</span><span class="cd-lbl">seg</span></div>
+    </div>
 
     <div class="timing">
       <div class="seg"><span class="lbl">Data</span><span class="val">04 / 10</span></div>
@@ -285,11 +319,13 @@
       <p class="section-sub">Pista, boxe e arquibancada — tudo no mesmo endereço. Chega uns minutos antes pra já ir com o capacete na mão.</p>
     </div>
     <div class="loc-grid">
-      <a class="map-frame" href="https://www.google.com/maps/search/?api=1&query=RBC+Racing+Vespasiano" target="_blank" rel="noopener">
-        <div class="pin"><span>🏁</span></div>
-        <div class="map-label">RBC Racing Vespasiano</div>
-        <div class="map-cta"><u>Abrir no Google Maps ↗</u></div>
-      </a>
+      <div class="map-frame">
+        <iframe
+          src="https://www.google.com/maps?q=RBC+Racing+Vespasiano&output=embed"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Mapa RBC Racing Vespasiano"></iframe>
+      </div>
       <div class="loc-card">
         <div class="addr">
           <b>RBC Racing Vespasiano</b>
@@ -298,7 +334,7 @@
         <ul class="rules">
           <li><span class="dot"></span><span><b>Peso máximo:</b> 140kg por piloto.</span></li>
           <li><span class="dot"></span><span><b>Preço médio:</b> R$160 por bateria (confirmar no local).</span></li>
-          <li><span class="dot"></span><span><b>Leve:</b> documento e disposição — capacete e macacão são da casa.</span></li>
+          <li><span class="dot"></span><span><b>Leve:</b> coragem e disposição — todos os equipamentos necessários para correr são fornecidos pelo estabelecimento.</span></li>
         </ul>
         <a class="btn btn-ghost" style="align-self:flex-start" href="https://www.google.com/maps/search/?api=1&query=RBC+Racing+Vespasiano" target="_blank" rel="noopener">Abrir no Google Maps ↗</a>
       </div>
@@ -321,8 +357,10 @@
             </div>
             <div class="field">
               <label for="indicadoPor">Indicado por (opcional)</label>
-              <input id="indicadoPor" name="indicadoPor" type="text" list="lista-pilotos" placeholder="Começa a digitar um nome já confirmado…">
-              <datalist id="lista-pilotos"></datalist>
+              <div class="combo">
+                <input id="indicadoPor" name="indicadoPor" type="text" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="combo-list" placeholder="Começa a digitar um nome já confirmado…">
+                <ul class="combo-list" id="combo-list" role="listbox"></ul>
+              </div>
               <span class="hint">Se o nome já existir na lista, ele aparece pra você escolher. Se não existir, sem problema — a gente registra do mesmo jeito.</span>
             </div>
             <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Confirmar presença 🏁</button>
@@ -396,12 +434,6 @@
     `).join('');
   }
 
-  function renderAutocomplete(data){
-    const list = document.getElementById('lista-pilotos');
-    const unique = [...new Set(data.map(r => r.nome))];
-    list.innerHTML = unique.map(n => `<option value="${escapeHtml(n)}">`).join('');
-  }
-
   function escapeHtml(str){
     return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   }
@@ -409,8 +441,104 @@
   function applyData(data){
     currentData = data;
     renderGrid(data);
-    renderAutocomplete(data);
   }
+
+  // ---- Combobox "indicado por": sugere nomes já confirmados enquanto digita ----
+  const indicadoInput = document.getElementById('indicadoPor');
+  const comboList = document.getElementById('combo-list');
+  let activeIndex = -1;
+
+  function comboOptions(query){
+    const unique = [...new Set(currentData.map(r => r.nome))];
+    if(!query) return unique.slice(0, 6);
+    const q = query.toLowerCase();
+    return unique.filter(n => n.toLowerCase().includes(q)).slice(0, 6);
+  }
+
+  function highlight(nome, query){
+    if(!query) return escapeHtml(nome);
+    const i = nome.toLowerCase().indexOf(query.toLowerCase());
+    if(i === -1) return escapeHtml(nome);
+    return escapeHtml(nome.slice(0,i)) + '<mark>' + escapeHtml(nome.slice(i,i+query.length)) + '</mark>' + escapeHtml(nome.slice(i+query.length));
+  }
+
+  function renderCombo(){
+    const query = indicadoInput.value.trim();
+    const options = comboOptions(query);
+    activeIndex = -1;
+    if(!options.length){
+      comboList.classList.remove('open');
+      indicadoInput.setAttribute('aria-expanded', 'false');
+      comboList.innerHTML = '';
+      return;
+    }
+    comboList.innerHTML = options.map((n, i) => `
+      <li role="option" data-value="${escapeHtml(n)}" id="combo-opt-${i}">
+        <span>${highlight(n, query)}</span><span class="tag">já confirmado</span>
+      </li>
+    `).join('');
+    comboList.classList.add('open');
+    indicadoInput.setAttribute('aria-expanded', 'true');
+  }
+
+  function closeCombo(){
+    comboList.classList.remove('open');
+    indicadoInput.setAttribute('aria-expanded', 'false');
+    activeIndex = -1;
+  }
+
+  function selectComboItem(el){
+    indicadoInput.value = el.getAttribute('data-value');
+    closeCombo();
+  }
+
+  indicadoInput.addEventListener('focus', renderCombo);
+  indicadoInput.addEventListener('input', renderCombo);
+
+  comboList.addEventListener('mousedown', function(e){
+    const li = e.target.closest('li');
+    if(li) selectComboItem(li);
+  });
+
+  indicadoInput.addEventListener('keydown', function(e){
+    const items = [...comboList.querySelectorAll('li')];
+    if(!items.length) return;
+    if(e.key === 'ArrowDown'){
+      e.preventDefault();
+      activeIndex = (activeIndex + 1) % items.length;
+    } else if(e.key === 'ArrowUp'){
+      e.preventDefault();
+      activeIndex = (activeIndex - 1 + items.length) % items.length;
+    } else if(e.key === 'Enter' && activeIndex >= 0){
+      e.preventDefault();
+      selectComboItem(items[activeIndex]);
+      return;
+    } else if(e.key === 'Escape'){
+      closeCombo();
+      return;
+    } else {
+      return;
+    }
+    items.forEach((el, i) => el.classList.toggle('active', i === activeIndex));
+  });
+
+  document.addEventListener('click', function(e){
+    if(!e.target.closest('.combo')) closeCombo();
+  });
+
+  // ---- Contagem regressiva ----
+  const EVENT_DATE = new Date('2026-10-04T15:00:00-03:00').getTime();
+
+  function updateCountdown(){
+    const diff = Math.max(0, EVENT_DATE - Date.now());
+    const pad = n => String(n).padStart(2, '0');
+    document.getElementById('cd-d').textContent = pad(Math.floor(diff / 86400000));
+    document.getElementById('cd-h').textContent = pad(Math.floor((diff % 86400000) / 3600000));
+    document.getElementById('cd-m').textContent = pad(Math.floor((diff % 3600000) / 60000));
+    document.getElementById('cd-s').textContent = pad(Math.floor((diff % 60000) / 1000));
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
 
   function loadFromWebhook(){
     if(!WEBHOOK_URL){
