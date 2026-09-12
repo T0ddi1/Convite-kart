@@ -342,6 +342,8 @@
 
   .ext-link{display:inline-flex; align-items:center; gap:4px; white-space:nowrap;}
   .ext-icon{flex:none; display:inline-block;}
+  .ext-link-text{color:var(--accent); font-weight:600; text-decoration:underline; text-underline-offset:2px;}
+  .ext-link-text .ext-icon{vertical-align:-1px; margin-left:2px;}
 
   /* HERO CANVAS (streaks de velocidade em movimento) */
   .hero-canvas{position:absolute; inset:0; z-index:0; opacity:.55; pointer-events:none;}
@@ -525,7 +527,7 @@
       <div class="briefing-card reveal">
         <div class="briefing-top"><span class="briefing-num">01</span><h3>Cadastro</h3></div>
         <ol>
-          <li>Faça o seu <a class="ext-link" href="https://rbcracing.com.br/cadastro" target="_blank" rel="noopener">pré-cadastro no site do RBC Racing<svg class="ext-icon" width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M17 7H9M17 7V15" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>.</li>
+          <li>Faça o seu <a class="ext-link-text" href="https://rbcracing.com.br/cadastro" target="_blank" rel="noopener">pré-cadastro no site do RBC Racing<svg class="ext-icon" width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M17 7H9M17 7V15" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>.</li>
           <li>Quem já é cadastrado só usa o autoatendimento no dia da bateria com CPF ou e-mail, escolhe o horário agendado e assina o termo de responsabilidade.</li>
         </ol>
       </div>
