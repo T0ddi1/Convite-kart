@@ -97,8 +97,9 @@
   @media (max-width:700px){ .hero-spine{display:none;} }
 
   .hero-inner{position:relative; z-index:1; padding:60px 24px 46px; text-align:center;}
+  .ico-flag{vertical-align:-2px; flex:none;}
   .kicker{
-    display:inline-flex; align-items:center; gap:9px;
+    display:inline-flex; align-items:center; gap:8px;
     font-family:'Roboto Mono',monospace; font-size:12px; letter-spacing:.16em;
     text-transform:uppercase; color:var(--gold);
     background:var(--gold-soft);
@@ -226,6 +227,18 @@
   @media (prefers-reduced-motion: reduce){ .reveal{opacity:1; transform:none; transition:none;} }
 
   /* LOCATION */
+  .track-banner{position:relative; aspect-ratio:21/8; overflow:hidden; border:1px solid var(--line-strong); margin-bottom:20px;}
+  .track-banner img{width:100%; height:100%; object-fit:cover; display:block;}
+  .track-banner::after{
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(180deg, transparent 45%, rgba(10,10,11,.9) 100%), linear-gradient(100deg, rgba(10,10,11,.6) 0%, transparent 40%);
+  }
+  .track-banner-tag{
+    position:absolute; left:16px; bottom:14px; z-index:2;
+    font-family:'Roboto Mono',monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--gold); background:rgba(10,10,11,.6); padding:6px 12px;
+    border:1px solid color-mix(in srgb, var(--gold) 45%, transparent);
+  }
   .loc-grid{display:grid; grid-template-columns:1.1fr 1fr; gap:20px;}
   @media (max-width:760px){ .loc-grid{grid-template-columns:1fr;} }
   .map-frame{
@@ -244,6 +257,15 @@
   .spec-wide .spec-row{align-items:flex-start;}
   .spec-wide .spec-k{width:96px; padding-top:2px;}
   .spec-wide .spec-v{font-family:'Inter',sans-serif; text-transform:none; font-size:14.5px; font-weight:500; line-height:1.4;}
+
+  .kart-grid{display:grid; grid-template-columns:1fr 1.15fr; gap:20px; align-items:start;}
+  @media (max-width:760px){ .kart-grid{grid-template-columns:1fr;} }
+  .kart-photos{display:flex; flex-direction:column; gap:10px;}
+  .kart-photo-main{aspect-ratio:3/2; overflow:hidden; border:1px solid var(--line-strong);}
+  .kart-photo-main img{width:100%; height:100%; object-fit:cover; display:block;}
+  .kart-photo-sub{width:58%; align-self:flex-end; aspect-ratio:1/1; overflow:hidden; border:1px solid var(--line-strong); margin-top:-28px; position:relative; z-index:1; background:var(--bg);}
+  .kart-photo-sub img{width:100%; height:100%; object-fit:cover; display:block;}
+  @media (max-width:760px){ .kart-photo-sub{margin-top:10px; align-self:flex-start;} }
   .rules{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:11px; border-top:1px solid var(--line); padding-top:14px;}
   .rules li{display:flex; gap:10px; font-size:14px; color:var(--muted); align-items:flex-start; line-height:1.5;}
   .rules li b{color:var(--ink); font-weight:600;}
@@ -331,7 +353,7 @@
     border-top:1px solid var(--line-strong); padding:32px 0 46px; text-align:center;
     color:var(--muted); font-size:13px;
   }
-  footer .flag{font-family:'Oswald',sans-serif; letter-spacing:.08em; color:var(--ink); text-transform:uppercase; font-weight:600; margin-bottom:5px;}
+  footer .flag{display:inline-flex; align-items:center; gap:7px; font-family:'Oswald',sans-serif; letter-spacing:.08em; color:var(--ink); text-transform:uppercase; font-weight:600; margin-bottom:5px;}
 </style>
 
 <div class="checker"></div>
@@ -342,15 +364,15 @@
   <div class="hero-watermark" aria-hidden="true">04</div>
   <div class="hero-spine" aria-hidden="true">RBC RACING · VESPASIANO · KART</div>
   <div class="hero-inner">
-    <span class="kicker">🏁 4ª Edição · RBC Racing Vespasiano</span>
+    <span class="kicker"><svg class="ico-flag" width="14" height="14" viewBox="0 0 18 16" fill="none" aria-hidden="true"><rect x="1" y="0" width="1.6" height="16" fill="currentColor"/><rect x="3.6" y="1.2" width="3.1" height="3.1" fill="currentColor"/><rect x="9.8" y="1.2" width="3.1" height="3.1" fill="currentColor" opacity="0.35"/><rect x="6.7" y="4.3" width="3.1" height="3.1" fill="currentColor" opacity="0.35"/><rect x="12.9" y="4.3" width="3.1" height="3.1" fill="currentColor"/><rect x="3.6" y="7.4" width="3.1" height="3.1" fill="currentColor"/><rect x="9.8" y="7.4" width="3.1" height="3.1" fill="currentColor" opacity="0.35"/></svg>4ª Edição · RBC Racing Vespasiano</span>
     <h1 class="title">KART DA<br><span>RESENHA</span></h1>
-    <p class="subhead">A galera fechou: vai ter aceleração garantida, disputa de grid e resenha depois. Confirma sua vaga aí embaixo.</p>
+    <p class="subhead">Motor ligado, capacete na mão e o grupo inteiro cravado no grid. Essa já é a 4ª vez que a gente fecha a pista do RBC só pra decidir, de vez, quem é mais rápido — sem choro depois.</p>
 
     <div class="hero-meta">
       <div class="start-lights" aria-hidden="true" id="start-lights">
         <span></span><span></span><span></span><span></span><span></span>
       </div>
-      <span class="cd-caption">T-minus para o grid</span>
+      <span class="cd-caption">Contagem até a bandeira verde</span>
       <div class="countdown" aria-live="polite" aria-label="Contagem regressiva para o evento">
         <div class="cd-seg"><span class="cd-val" id="cd-d">00</span><span class="cd-lbl">dias</span></div>
         <span class="cd-sep">:</span>
@@ -396,6 +418,10 @@
       <h2 class="section-title">O ponto de encontro</h2>
       <p class="section-sub">Pista, boxe e arquibancada — tudo no mesmo endereço. Chega uns minutos antes pra já ir com o capacete na mão.</p>
     </div>
+    <div class="track-banner reveal">
+      <img src="images/track-aerial.webp" alt="Vista aérea da pista do RBC Racing Vespasiano" loading="lazy">
+      <span class="track-banner-tag">Vista aérea · RBC Racing</span>
+    </div>
     <div class="loc-grid">
       <div class="map-frame reveal">
         <iframe
@@ -425,11 +451,17 @@
       <h2 class="section-title">O kart</h2>
       <p class="section-sub">Ficha técnica direto do RBC Racing.</p>
     </div>
-    <div class="loc-card panel reveal spec-wide">
-      <div class="spec">
-        <div class="spec-row"><span class="spec-k">Motor</span><span class="spec-v">Honda 13HP, com cercado de borracha nas laterais pra correr com mais segurança.</span></div>
-        <div class="spec-row"><span class="spec-k">Equipamento</span><span class="spec-v">Todos os equipamentos de segurança (capacete, balaclava, luvas e pescoceira) estão inclusos na locação.</span></div>
-        <div class="spec-row"><span class="spec-k">Resultado</span><span class="spec-v">Resultado da corrida enviado por e-mail, pelo app My Lap Time ou direto na recepção.</span></div>
+    <div class="kart-grid">
+      <div class="kart-photos reveal">
+        <div class="kart-photo-main"><img src="images/kart-photo.webp" alt="Kart de aluguel do RBC Racing na pista" loading="lazy"></div>
+        <div class="kart-photo-sub"><img src="images/equipment-photo.webp" alt="Capacete, macacão e equipamentos de segurança do RBC Racing" loading="lazy"></div>
+      </div>
+      <div class="loc-card panel reveal right spec-wide">
+        <div class="spec">
+          <div class="spec-row"><span class="spec-k">Motor</span><span class="spec-v">Honda 13HP, com cercado de borracha nas laterais pra correr com mais segurança.</span></div>
+          <div class="spec-row"><span class="spec-k">Equipamento</span><span class="spec-v">Todos os equipamentos de segurança (capacete, balaclava, luvas e pescoceira) estão inclusos na locação.</span></div>
+          <div class="spec-row"><span class="spec-k">Resultado</span><span class="spec-v">Resultado da corrida enviado por e-mail, pelo app My Lap Time ou direto na recepção.</span></div>
+        </div>
       </div>
     </div>
   </section>
@@ -456,7 +488,7 @@
               </div>
               <span class="hint">Se o nome já existir na lista, ele aparece pra você escolher. Se não existir, sem problema — a gente registra do mesmo jeito.</span>
             </div>
-            <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Confirmar presença 🏁</button>
+            <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Confirmar presença<svg class="ico-flag" width="14" height="14" viewBox="0 0 18 16" fill="none" aria-hidden="true"><rect x="1" y="0" width="1.6" height="16" fill="currentColor"/><rect x="3.6" y="1.2" width="3.1" height="3.1" fill="currentColor"/><rect x="9.8" y="1.2" width="3.1" height="3.1" fill="currentColor" opacity="0.35"/><rect x="6.7" y="4.3" width="3.1" height="3.1" fill="currentColor" opacity="0.35"/><rect x="12.9" y="4.3" width="3.1" height="3.1" fill="currentColor"/><rect x="3.6" y="7.4" width="3.1" height="3.1" fill="currentColor"/><rect x="9.8" y="7.4" width="3.1" height="3.1" fill="currentColor" opacity="0.35"/></svg></button>
             <div id="form-msg" class="form-msg"></div>
           </form>
         </div>
@@ -517,7 +549,7 @@
 </div>
 
 <footer>
-  <div class="flag">🏁 RBC Racing Vespasiano</div>
+  <div class="flag"><svg class="ico-flag" width="14" height="14" viewBox="0 0 18 16" fill="none" aria-hidden="true"><rect x="1" y="0" width="1.6" height="16" fill="currentColor"/><rect x="3.6" y="1.2" width="3.1" height="3.1" fill="currentColor"/><rect x="9.8" y="1.2" width="3.1" height="3.1" fill="currentColor" opacity="0.35"/><rect x="6.7" y="4.3" width="3.1" height="3.1" fill="currentColor" opacity="0.35"/><rect x="12.9" y="4.3" width="3.1" height="3.1" fill="currentColor"/><rect x="3.6" y="7.4" width="3.1" height="3.1" fill="currentColor"/><rect x="9.8" y="7.4" width="3.1" height="3.1" fill="currentColor" opacity="0.35"/></svg>RBC Racing Vespasiano</div>
   Vem acelerar com a gente.
 </footer>
 
@@ -802,7 +834,7 @@
 
     applyData([...currentData, { nome, indicadoPor }]);
     msg.className = 'form-msg ok';
-    msg.textContent = 'Presença confirmada! Bora acelerar. 🏁';
+    msg.textContent = 'Presença confirmada! Bora acelerar.';
     document.getElementById('form-reserva').reset();
 
     setTimeout(loadFromWebhook, 2500);
