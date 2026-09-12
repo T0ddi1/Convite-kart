@@ -309,8 +309,9 @@
   .grid-table{width:100%; border-collapse:collapse; font-size:14.5px;}
   .grid-table th{
     text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.1em;
-    color:var(--gold); padding:0 12px 12px; border-bottom:1px solid var(--line-strong); font-weight:600;
+    color:var(--gold); padding:12px 12px; border-bottom:1px solid var(--line-strong); font-weight:600;
     font-family:'Roboto Mono',monospace;
+    position:sticky; top:0; background:var(--surface); z-index:1;
   }
   .grid-table td{padding:12px; border-bottom:1px solid var(--line); vertical-align:middle;}
   .grid-table tr:last-child td{border-bottom:none;}
@@ -320,7 +321,7 @@
   }
   .via{color:var(--muted); font-size:13.5px;}
   .via b{color:var(--ink); font-weight:500;}
-  .table-wrap{overflow-x:auto; border:1px solid var(--line-strong); background:var(--surface);}
+  .table-wrap{overflow-x:auto; overflow-y:auto; max-height:420px; border:1px solid var(--line-strong); background:var(--surface);}
   .table-scroll{min-width:420px;}
   .empty-row td{color:var(--muted); text-align:center; padding:28px; font-style:italic;}
 
